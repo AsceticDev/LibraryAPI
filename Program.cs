@@ -1,4 +1,3 @@
-using LibraryAPI.Contracts;
 using LibraryAPI.Entities.Models;
 using LibraryAPI.Extensions;
 using LibraryAPI.JwtFeatures;
@@ -17,13 +16,13 @@ builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureRepositoryManager();
 builder.Services.AddAutoMapper(typeof(Program));
 
-//builder.Services.AddIdentity<User, IdentityRole>(opt =>
-//{
-//    opt.Password.RequiredLength = 7;
-//    opt.Password.RequireDigit = false;
+builder.Services.AddIdentity<User, IdentityRole>(opt =>
+{
+    opt.Password.RequiredLength = 7;
+    opt.Password.RequireDigit = false;
 
-//    opt.User.RequireUniqueEmail = true;
-//}).AddEntityFrameworkStores<RepositoryContext>();
+    opt.User.RequireUniqueEmail = true;
+}).AddEntityFrameworkStores<RepositoryContext>();
 
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 builder.Services.AddAuthentication(opt =>
@@ -45,8 +44,8 @@ builder.Services.AddAuthentication(opt =>
     };
 });
 
-//builder.Services.AddScoped<JwtHandler>();
-builder.Services.AddTransient<ITokenRepository, TokenRepository>();
+builder.Services.AddScoped<JwtHandler>();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

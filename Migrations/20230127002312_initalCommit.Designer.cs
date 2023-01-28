@@ -4,6 +4,7 @@ using LibraryAPI.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryAPI.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20230127002312_initalCommit")]
+    partial class initalCommit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,79 +23,6 @@ namespace LibraryAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("LibraryAPI.Entities.Models.Book", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("BookId");
-
-                    b.Property<string>("Author")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Cover")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CurrentUserBorrowingId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool?>("IsBorrowed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CurrentUserBorrowingId");
-
-                    b.ToTable("Books");
-                });
-
-            modelBuilder.Entity("LibraryAPI.Entities.Models.BorrowHistoryEntry", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("BorrowHistoryEntryId");
-
-                    b.Property<Guid>("BookId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserId1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("entryTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool?>("isBorrowed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("isReturned")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookId");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
-
-                    b.ToTable("BorrowHistoryEntries");
-                });
 
             modelBuilder.Entity("LibraryAPI.Entities.Models.Company", b =>
                 {
@@ -118,6 +47,22 @@ namespace LibraryAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Companies");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"),
+                            Address = "583 Wall Dr. Gwynn Oak, MD 21207",
+                            Country = "USA",
+                            Name = "IT_Solutions Ltd"
+                        },
+                        new
+                        {
+                            Id = new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3"),
+                            Address = "312 Forest Avenue, BF 923",
+                            Country = "USA",
+                            Name = "Admin_Solutions Ltd"
+                        });
                 });
 
             modelBuilder.Entity("LibraryAPI.Entities.Models.Employee", b =>
@@ -148,6 +93,32 @@ namespace LibraryAPI.Migrations
                     b.HasIndex("CompanyId");
 
                     b.ToTable("Employees");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("80abbca8-664d-4b20-b5de-024705497d4a"),
+                            Age = 26,
+                            CompanyId = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"),
+                            Name = "Sam Raiden",
+                            Position = "Software developer"
+                        },
+                        new
+                        {
+                            Id = new Guid("86dba8c0-d178-41e7-938c-ed49778fb52a"),
+                            Age = 30,
+                            CompanyId = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"),
+                            Name = "Jana McLeaf",
+                            Position = "Software developer"
+                        },
+                        new
+                        {
+                            Id = new Guid("021ca3c1-0deb-4afd-ae94-2159a8479811"),
+                            Age = 35,
+                            CompanyId = new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3"),
+                            Name = "Kane Miller",
+                            Position = "Administrator"
+                        });
                 });
 
             modelBuilder.Entity("LibraryAPI.Entities.Models.User", b =>
@@ -354,40 +325,6 @@ namespace LibraryAPI.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("LibraryAPI.Entities.Models.Book", b =>
-                {
-                    b.HasOne("LibraryAPI.Entities.Models.User", "CurrentUserBorrowing")
-                        .WithMany()
-                        .HasForeignKey("CurrentUserBorrowingId");
-
-                    b.Navigation("CurrentUserBorrowing");
-                });
-
-            modelBuilder.Entity("LibraryAPI.Entities.Models.BorrowHistoryEntry", b =>
-                {
-                    b.HasOne("LibraryAPI.Entities.Models.Book", "Book")
-                        .WithMany("BorrowHistoryEntries")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LibraryAPI.Entities.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LibraryAPI.Entities.Models.User", "User")
-                        .WithMany("BorrowHistoryEntries")
-                        .HasForeignKey("UserId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("LibraryAPI.Entities.Models.Employee", b =>
                 {
                     b.HasOne("LibraryAPI.Entities.Models.Company", "Company")
@@ -448,16 +385,6 @@ namespace LibraryAPI.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("LibraryAPI.Entities.Models.Book", b =>
-                {
-                    b.Navigation("BorrowHistoryEntries");
-                });
-
-            modelBuilder.Entity("LibraryAPI.Entities.Models.User", b =>
-                {
-                    b.Navigation("BorrowHistoryEntries");
                 });
 #pragma warning restore 612, 618
         }

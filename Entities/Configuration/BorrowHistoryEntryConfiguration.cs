@@ -8,14 +8,14 @@ namespace LibraryAPI.Entities.Configuration
     {
         public void Configure(EntityTypeBuilder<BorrowHistoryEntry> builder)
         {
-            //builder.HasOne(x => x.User)
-            //    .WithMany(x => x.BorrowHistoryEntries)
-            //    .HasForeignKey(x => x.UserId);
+            builder.HasOne(x => x.User)
+                .WithMany(x => x.BorrowHistoryEntries)
+                .HasForeignKey(x => x.UserId);
 
 
-            //builder.HasOne(x => x.Book)
-            //    .WithMany(x => x.BorrowHistoryEntries)
-            //    .HasForeignKey(x => x.BookId);
+            builder.HasOne(x => x.Book)
+                .WithMany(x => x.BorrowHistoryEntries)
+                .HasForeignKey(x => x.BookId);
         }
     }
 }
