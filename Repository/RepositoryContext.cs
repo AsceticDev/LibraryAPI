@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LibraryAPI.Repository
 {
-    public class RepositoryContext : IdentityDbContext<User>
+    public class RepositoryContext : DbContext
     {
         public RepositoryContext(DbContextOptions options)
         : base(options)
@@ -17,9 +17,10 @@ namespace LibraryAPI.Repository
 
             //modelBuilder.ApplyConfiguration(new CompanyConfiguration());
             //modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
-            new BorrowHistoryEntryConfiguration().Configure(modelBuilder.Entity<BorrowHistoryEntry>());
-            new BookConfiguration().Configure(modelBuilder.Entity<Book>());
-            new UserConfiguration().Configure(modelBuilder.Entity<User>());
+            //new BorrowHistoryEntryConfiguration().Configure(modelBuilder.Entity<BorrowHistoryEntry>());
+            //new BookConfiguration().Configure(modelBuilder.Entity<Book>());
+            //new UserConfiguration().Configure(modelBuilder.Entity<User>());
+            new LoginModelConfiguration().Configure(modelBuilder.Entity<LoginModel>());
 
             //modelBuilder.Entity<Book>()
             //    .HasMany(s => s.BorrowHistoryEntries)
@@ -27,10 +28,12 @@ namespace LibraryAPI.Repository
             base.OnModelCreating(modelBuilder);
         }
 
-        public DbSet<Company>? Companies { get; set; }
-        public DbSet<Employee>? Employees { get; set; }
-        public DbSet<Book>? Books { get; set; }
-        public override DbSet<User>? Users { get; set; }
-        public DbSet<BorrowHistoryEntry>? BorrowHistoryEntries{ get; set; }
+        //public DbSet<Company>? Companies { get; set; }
+        //public DbSet<Employee>? Employees { get; set; }
+        //public DbSet<Book>? Books { get; set; }
+        //public override DbSet<User>? Users { get; set; }
+        public DbSet<LoginModel>? LoginModels { get; set; }
+
+        //public DbSet<BorrowHistoryEntry>? BorrowHistoryEntries{ get; set; }
     }
 }

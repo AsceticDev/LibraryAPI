@@ -8,8 +8,8 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace LibraryAPI.Controllers
 {
-    [Route("api/accounts")]
-    [ApiController]
+    //[Route("api/accounts")]
+    //[ApiController]
     public class AccountsController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
@@ -23,7 +23,7 @@ namespace LibraryAPI.Controllers
             _jwtHandler = jwtHandler;
         }
 
-        [HttpPost("Registration")]
+        //[HttpPost("Registration")]
         public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
         {
             if (userForRegistration == null || !ModelState.IsValid)
@@ -41,7 +41,7 @@ namespace LibraryAPI.Controllers
             return StatusCode(201);
         }
 
-        [HttpPost("Login")]
+        //[HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] UserForAuthenticationDto userForAuthentication)
         {
             var user = await _userManager.FindByNameAsync(userForAuthentication.Email);
